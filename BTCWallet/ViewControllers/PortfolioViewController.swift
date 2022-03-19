@@ -25,7 +25,7 @@ class PortfolioViewController: UIViewController {
         setNavigationBar()
         setStyle()
         setLayout()
-        addWalletPropertyToTableView()
+        //addWalletPropertyToTableView()
     }
 }
     // MARK: - Private Methods
@@ -57,6 +57,7 @@ extension PortfolioViewController {
         addButton.backgroundColor = .systemGreen
         addButton.layer.cornerRadius = 18
         addButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
+        addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
     }
     
     private func setLayout() {
@@ -82,12 +83,12 @@ extension PortfolioViewController {
         ])
     }
     
-    private func addWalletPropertyToTableView() {
-        wallet.append(contentsOf: [
-                Wallet(walletAddress: "bc1qdty3ms6psftl63nyk5wvnz7yz8vmuy87fcpn3kw7ecuuwe83j76sl0f9x4", walletAmount: "0.00 BTC"),
-                Wallet(walletAddress: "bc1qdty3ms6psftl63nyk5wvnz7yz8vmuy87fcpn3kw7ecuuwe83j76sl0f9x4", walletAmount: "0.00 BTC")
-            ])
-        }
+//    private func addWalletPropertyToTableView() {
+//        wallet.append(contentsOf: [
+//                Wallet(walletAddress: "bc1qdty3ms6psftl63nyk5wvnz7yz8vmuy87fcpn3kw7ecuuwe83j76sl0f9x4", walletAmount: "0.00 BTC"),
+//                Wallet(walletAddress: "bc1qdty3ms6psftl63nyk5wvnz7yz8vmuy87fcpn3kw7ecuuwe83j76sl0f9x4", walletAmount: "0.00 BTC")
+//            ])
+//        }
 }
 
     // MARK: - TableView Data Source
@@ -115,5 +116,29 @@ extension PortfolioViewController: UITableViewDelegate {
     // Configure select cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+    }
+}
+
+// MARK: - Navigation Method
+extension PortfolioViewController {
+    @objc func addButtonPressed() {
+        let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
+        
+        let addAction = UIAlertAction(title: "Add", style: .default) { action in
+            guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
+
+            self.wallet.append(contentsOf: [
+                Wallet(walletAddress: walletAddress, walletAmount: "0.00 BTC")
+            ])
+            self.tableView.reloadData()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        
+        alertController.addTextField(configurationHandler: nil)
+        alertController.addAction(addAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
     }
 }

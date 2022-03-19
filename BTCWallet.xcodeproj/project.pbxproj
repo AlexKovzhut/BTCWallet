@@ -11,7 +11,7 @@
 		022F1E3827E651A5004CC37F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E3727E651A5004CC37F /* SceneDelegate.swift */; };
 		022F1E3F27E651A5004CC37F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 022F1E3E27E651A5004CC37F /* Assets.xcassets */; };
 		022F1E4227E651A5004CC37F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 022F1E4027E651A5004CC37F /* LaunchScreen.storyboard */; };
-		022F1E4A27E6559E004CC37F /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4927E6559E004CC37F /* RootViewController.swift */; };
+		022F1E4A27E6559E004CC37F /* PortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4927E6559E004CC37F /* PortfolioViewController.swift */; };
 		022F1E4C27E6585C004CC37F /* WalletInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -22,7 +22,7 @@
 		022F1E3E27E651A5004CC37F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		022F1E4127E651A5004CC37F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		022F1E4327E651A5004CC37F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		022F1E4927E6559E004CC37F /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		022F1E4927E6559E004CC37F /* PortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewController.swift; sourceTree = "<group>"; };
 		022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,7 +67,7 @@
 		022F1E4D27E65883004CC37F /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				022F1E4927E6559E004CC37F /* RootViewController.swift */,
+				022F1E4927E6559E004CC37F /* PortfolioViewController.swift */,
 				022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */,
 			);
 			path = ViewControllers;
@@ -171,7 +171,7 @@
 			files = (
 				022F1E3627E651A5004CC37F /* AppDelegate.swift in Sources */,
 				022F1E4C27E6585C004CC37F /* WalletInfoViewController.swift in Sources */,
-				022F1E4A27E6559E004CC37F /* RootViewController.swift in Sources */,
+				022F1E4A27E6559E004CC37F /* PortfolioViewController.swift in Sources */,
 				022F1E3827E651A5004CC37F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

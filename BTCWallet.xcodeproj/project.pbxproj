@@ -9,21 +9,21 @@
 /* Begin PBXBuildFile section */
 		022F1E3627E651A5004CC37F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E3527E651A5004CC37F /* AppDelegate.swift */; };
 		022F1E3827E651A5004CC37F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E3727E651A5004CC37F /* SceneDelegate.swift */; };
-		022F1E3A27E651A5004CC37F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E3927E651A5004CC37F /* ViewController.swift */; };
-		022F1E3D27E651A5004CC37F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 022F1E3B27E651A5004CC37F /* Main.storyboard */; };
 		022F1E3F27E651A5004CC37F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 022F1E3E27E651A5004CC37F /* Assets.xcassets */; };
 		022F1E4227E651A5004CC37F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 022F1E4027E651A5004CC37F /* LaunchScreen.storyboard */; };
+		022F1E4A27E6559E004CC37F /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4927E6559E004CC37F /* RootViewController.swift */; };
+		022F1E4C27E6585C004CC37F /* WalletInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		022F1E3227E651A5004CC37F /* BTCWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTCWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		022F1E3527E651A5004CC37F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		022F1E3727E651A5004CC37F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		022F1E3927E651A5004CC37F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		022F1E3C27E651A5004CC37F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		022F1E3E27E651A5004CC37F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		022F1E4127E651A5004CC37F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		022F1E4327E651A5004CC37F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		022F1E4927E6559E004CC37F /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +56,47 @@
 		022F1E3427E651A5004CC37F /* BTCWallet */ = {
 			isa = PBXGroup;
 			children = (
-				022F1E3527E651A5004CC37F /* AppDelegate.swift */,
-				022F1E3727E651A5004CC37F /* SceneDelegate.swift */,
-				022F1E3927E651A5004CC37F /* ViewController.swift */,
-				022F1E3B27E651A5004CC37F /* Main.storyboard */,
-				022F1E3E27E651A5004CC37F /* Assets.xcassets */,
-				022F1E4027E651A5004CC37F /* LaunchScreen.storyboard */,
-				022F1E4327E651A5004CC37F /* Info.plist */,
+				022F1E4E27E6591F004CC37F /* Application */,
+				022F1E4F27E65938004CC37F /* Resources */,
+				022F1E4D27E65883004CC37F /* ViewControllers */,
+				022F1E5027E65947004CC37F /* Views */,
 			);
 			path = BTCWallet;
+			sourceTree = "<group>";
+		};
+		022F1E4D27E65883004CC37F /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				022F1E4927E6559E004CC37F /* RootViewController.swift */,
+				022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		022F1E4E27E6591F004CC37F /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				022F1E3527E651A5004CC37F /* AppDelegate.swift */,
+				022F1E3727E651A5004CC37F /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		022F1E4F27E65938004CC37F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				022F1E4327E651A5004CC37F /* Info.plist */,
+				022F1E3E27E651A5004CC37F /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		022F1E5027E65947004CC37F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				022F1E4027E651A5004CC37F /* LaunchScreen.storyboard */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +159,6 @@
 			files = (
 				022F1E4227E651A5004CC37F /* LaunchScreen.storyboard in Resources */,
 				022F1E3F27E651A5004CC37F /* Assets.xcassets in Resources */,
-				022F1E3D27E651A5004CC37F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,8 +169,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				022F1E3A27E651A5004CC37F /* ViewController.swift in Sources */,
 				022F1E3627E651A5004CC37F /* AppDelegate.swift in Sources */,
+				022F1E4C27E6585C004CC37F /* WalletInfoViewController.swift in Sources */,
+				022F1E4A27E6559E004CC37F /* RootViewController.swift in Sources */,
 				022F1E3827E651A5004CC37F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,14 +179,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		022F1E3B27E651A5004CC37F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				022F1E3C27E651A5004CC37F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		022F1E4027E651A5004CC37F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -289,12 +313,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BJNJ35894G;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BTCWallet/Info.plist;
+				INFOPLIST_FILE = BTCWallet/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,7 +329,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -317,12 +342,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BJNJ35894G;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BTCWallet/Info.plist;
+				INFOPLIST_FILE = BTCWallet/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -332,7 +358,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

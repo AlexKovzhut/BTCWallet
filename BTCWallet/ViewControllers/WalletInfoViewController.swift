@@ -126,26 +126,26 @@ extension WalletInfoViewController {
             iconImage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.5/8),
             iconImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/13),
             
-            addDateTitle.topAnchor.constraint(equalTo: iconImage.bottomAnchor, constant: 30),
+            addDateTitle.topAnchor.constraint(equalTo: iconImage.bottomAnchor, constant: 20),
             addDateTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             addDateField.topAnchor.constraint(equalTo: addDateTitle.bottomAnchor, constant: 10),
             addDateField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            updateDateTitle.topAnchor.constraint(equalTo: addDateField.bottomAnchor, constant: 20),
+            updateDateTitle.topAnchor.constraint(equalTo: addDateField.bottomAnchor, constant: 30),
             updateDateTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             updateDateField.topAnchor.constraint(equalTo: updateDateTitle.bottomAnchor, constant: 10),
             updateDateField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            addressTitle.topAnchor.constraint(equalTo: updateDateField.bottomAnchor, constant: 20),
+            addressTitle.topAnchor.constraint(equalTo: updateDateField.bottomAnchor, constant: 30),
             addressTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             addressField.topAnchor.constraint(equalTo: addressTitle.bottomAnchor, constant: 10),
             addressField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addressField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/1.5),
             
-            balanceTitle.topAnchor.constraint(equalTo: addressField.bottomAnchor, constant: 20),
+            balanceTitle.topAnchor.constraint(equalTo: addressField.bottomAnchor, constant: 30),
             balanceTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             balanceField.topAnchor.constraint(equalTo: balanceTitle.bottomAnchor, constant: 10),

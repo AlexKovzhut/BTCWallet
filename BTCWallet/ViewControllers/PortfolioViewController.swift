@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Moya
 
 class PortfolioViewController: UIViewController {
     // MARK: - Private properties
@@ -16,6 +17,7 @@ class PortfolioViewController: UIViewController {
     
     // MARK: - Public properties
     public var wallets = [Wallet]()
+    public var walletProvider = MoyaProvider<WalletService>()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -120,18 +122,31 @@ extension PortfolioViewController: UITableViewDelegate {
 // MARK: - Navigation Method
 extension PortfolioViewController {
     @objc func addButtonPressed() {
+        print(#function)
+        
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
-            guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
+            guard let textField = alertController.textFields?.first, let addrStr = textField.text else { return }
 
-            self.wallets.append(contentsOf: [
-                Wallet(
-                    addrStr: walletAddress,
-                    balance: self.wallets.first?.balance ?? "Error",
-                    transactions: [])
-            ])
-            self.tableView.reloadData()
+            print("-------------------------------------------------\(addrStr)")
+            self.walletProvider.request(.addWallet(addrStr)) { result in
+                switch result {
+                case .success(let responce) :
+                    let newWallet = try! JSONDecoder().decode(Wallet.self, from: responce.data)
+                    print(newWallet)
+                    
+                    self.wallets.append(contentsOf: [
+                        Wallet(
+                            addrStr: newWallet.addrStr,
+                            balance: newWallet.balance,
+                            transactions: [])
+                    ])
+                    self.tableView.reloadData()
+                case .failure(let error):
+                    print(error)
+                }
+            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)

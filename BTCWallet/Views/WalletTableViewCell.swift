@@ -13,7 +13,6 @@ class WalletTableViewCell: UITableViewCell {
     
     var background = UIView()
     var iconImageView = UIImageView()
-    var stackView = UIStackView()
     var titleLabel = UILabel()
     var subTitleLabel = UILabel()
     var amountlabel = UILabel()
@@ -41,12 +40,6 @@ class WalletTableViewCell: UITableViewCell {
         
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.image = UIImage(named: "Bitcoin")
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 1
-        stackView.alignment = .fill
-        stackView.axis = .vertical
-        stackView.distribution = .fill
                 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "Bitcoin"
@@ -63,11 +56,9 @@ class WalletTableViewCell: UITableViewCell {
     private func setLayout() {
         contentView.addSubview(background)
         background.addSubview(iconImageView)
-        background.addSubview(stackView)
+        background.addSubview(titleLabel)
+        background.addSubview(subTitleLabel)
         background.addSubview(amountlabel)
-        
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(subTitleLabel)
                     
         NSLayoutConstraint.activate([
             background.topAnchor.constraint(equalToSystemSpacingBelow: contentView.safeAreaLayoutGuide.topAnchor, multiplier: 2),
@@ -78,14 +69,17 @@ class WalletTableViewCell: UITableViewCell {
             iconImageView.centerYAnchor.constraint(equalTo: background.centerYAnchor),
             iconImageView.heightAnchor.constraint(equalTo: background.heightAnchor, multiplier: 2 / 4),
             iconImageView.widthAnchor.constraint(equalTo: background.widthAnchor, multiplier: 1 / 9),
-            iconImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: background.leadingAnchor, multiplier: 1.2),
+            iconImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: background.leadingAnchor, multiplier: 1.5),
             
-            stackView.topAnchor.constraint(equalToSystemSpacingBelow: background.topAnchor, multiplier: 1.5),
-            stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: iconImageView.trailingAnchor, multiplier: 1),
-            stackView.trailingAnchor.constraint(equalTo: amountlabel.leadingAnchor, constant: -8),
+            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: background.topAnchor, multiplier: 1.5),
+            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: iconImageView.trailingAnchor, multiplier: 1.5),
+            
+            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            subTitleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: iconImageView.trailingAnchor, multiplier: 1.5),
+            subTitleLabel.widthAnchor.constraint(equalTo: background.widthAnchor, multiplier: 1 / 1.8),
 
             amountlabel.centerYAnchor.constraint(equalTo: background.centerYAnchor),
-            background.trailingAnchor.constraint(equalToSystemSpacingAfter: amountlabel.trailingAnchor, multiplier: 1.2)
+            background.trailingAnchor.constraint(equalToSystemSpacingAfter: amountlabel.trailingAnchor, multiplier: 1.5)
         ])
     }
     

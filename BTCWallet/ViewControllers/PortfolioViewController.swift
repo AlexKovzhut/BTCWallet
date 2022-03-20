@@ -9,7 +9,7 @@ import UIKit
 
 class PortfolioViewController: UIViewController {
     // MARK: - Private properties
-    private let titleLabel = UILabel()
+    private let navigationTitleLabel = UILabel()
     private let contentView = UIView()
     private let tableView = UITableView()
     private let addButton = UIButton()
@@ -25,7 +25,6 @@ class PortfolioViewController: UIViewController {
         setNavigationBar()
         setStyle()
         setLayout()
-        //addWalletPropertyToTableView()
     }
 }
     // MARK: - Private Methods
@@ -36,9 +35,12 @@ extension PortfolioViewController {
     }
     
     private func setNavigationBar() {
-        titleLabel.text = "Portfolio"
-        titleLabel.font = .systemFont(ofSize: 20, weight: .light)
-        navigationItem.titleView = titleLabel
+        navigationTitleLabel.text = "Portfolio"
+        navigationTitleLabel.font = .systemFont(ofSize: 20, weight: .light)
+        navigationItem.titleView = navigationTitleLabel
+        
+        navigationController?.navigationBar.tintColor = .black
+        navigationItem.backButtonTitle = ""
     }
     
     private func setStyle() {
@@ -82,13 +84,6 @@ extension PortfolioViewController {
             addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24)
         ])
     }
-    
-//    private func addWalletPropertyToTableView() {
-//        wallet.append(contentsOf: [
-//                Wallet(walletAddress: "bc1qdty3ms6psftl63nyk5wvnz7yz8vmuy87fcpn3kw7ecuuwe83j76sl0f9x4", walletAmount: "0.00 BTC"),
-//                Wallet(walletAddress: "bc1qdty3ms6psftl63nyk5wvnz7yz8vmuy87fcpn3kw7ecuuwe83j76sl0f9x4", walletAmount: "0.00 BTC")
-//            ])
-//        }
 }
 
     // MARK: - TableView Data Source

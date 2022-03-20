@@ -127,22 +127,26 @@ extension PortfolioViewController {
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
-            guard let textField = alertController.textFields?.first, let addrStr = textField.text else { return }
-
-            print("-------------------------------------------------\(addrStr)")
-            self.walletProvider.request(.addWallet(addrStr)) { result in
+            guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
+            
+            self.walletProvider.request(.addWallet(walletAddress)) { result in
                 switch result {
                 case .success(let responce) :
-                    let newWallet = try! JSONDecoder().decode(Wallet.self, from: responce.data)
-                    print(newWallet)
+                    let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
                     
-                    self.wallets.append(contentsOf: [
-                        Wallet(
-                            addrStr: newWallet.addrStr,
-                            balance: newWallet.balance,
-                            transactions: [])
-                    ])
-                    self.tableView.reloadData()
+                    if wallet?.balance == nil {
+                        self.showErrorAlert()
+                    } else {
+                        self.wallets.append(contentsOf: [
+                            Wallet(
+                                addrStr: wallet?.addrStr ?? "",
+                                balance: wallet?.balance ?? "",
+                                transactions: [])
+                        ])
+                        
+                        self.tableView.reloadData()
+                    }
+
                 case .failure(let error):
                     print(error)
                 }
@@ -156,5 +160,13 @@ extension PortfolioViewController {
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true)
+    }
+    
+    func showErrorAlert() {
+        let title = "Error"
+        let message = "Address is not recognized or does not exist. Please, try again"
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }

@@ -15,7 +15,7 @@ class PortfolioViewController: UIViewController {
     private let addButton = UIButton()
     
     // MARK: - Public properties
-    public var wallet = [Wallet]()
+    public var wallets = [Wallet]()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -95,12 +95,12 @@ extension PortfolioViewController {
 extension PortfolioViewController: UITableViewDataSource {
     // Configure row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return wallet.count
+        return wallets.count
     }
 
     // Configure cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let wallet = wallet[indexPath.row]
+        let wallet = wallets[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: WalletTableViewCell.identifier, for: indexPath) as! WalletTableViewCell
         
@@ -115,7 +115,10 @@ extension PortfolioViewController: UITableViewDataSource {
 extension PortfolioViewController: UITableViewDelegate {
     // Configure select cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let wallet = wallets[indexPath.row]
+        let destinationController = WalletInfoViewController()
+        destinationController.wallet = wallet
+        navigationController?.pushViewController(destinationController, animated: true)
     }
 }
 
@@ -127,7 +130,7 @@ extension PortfolioViewController {
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
             guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
 
-            self.wallet.append(contentsOf: [
+            self.wallets.append(contentsOf: [
                 Wallet(walletAddress: walletAddress, walletAmount: "0.00 BTC")
             ])
             self.tableView.reloadData()

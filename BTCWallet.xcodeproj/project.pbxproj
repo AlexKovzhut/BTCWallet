@@ -13,6 +13,7 @@
 		022F1E4227E651A5004CC37F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 022F1E4027E651A5004CC37F /* LaunchScreen.storyboard */; };
 		022F1E4A27E6559E004CC37F /* PortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4927E6559E004CC37F /* PortfolioViewController.swift */; };
 		022F1E4C27E6585C004CC37F /* WalletInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */; };
+		028BF8A527E76302007AD1B8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 028BF8A427E76302007AD1B8 /* Moya */; };
 		02BE4F9227E6642500DC95C8 /* WalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE4F9127E6642500DC95C8 /* WalletTableViewCell.swift */; };
 		02BE4F9527E66A1800DC95C8 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE4F9427E66A1800DC95C8 /* Wallet.swift */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				028BF8A527E76302007AD1B8 /* Moya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +62,7 @@
 		022F1E3427E651A5004CC37F /* BTCWallet */ = {
 			isa = PBXGroup;
 			children = (
+				02A5AAAC27E75A2B0054985A /* Network */,
 				02BE4F9327E66A0D00DC95C8 /* Models */,
 				022F1E4E27E6591F004CC37F /* Application */,
 				022F1E4F27E65938004CC37F /* Resources */,
@@ -105,6 +108,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		02A5AAAC27E75A2B0054985A /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		02BE4F9327E66A0D00DC95C8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +139,9 @@
 			dependencies = (
 			);
 			name = BTCWallet;
+			packageProductDependencies = (
+				028BF8A427E76302007AD1B8 /* Moya */,
+			);
 			productName = BTCWallet;
 			productReference = 022F1E3227E651A5004CC37F /* BTCWallet.app */;
 			productType = "com.apple.product-type.application";
@@ -157,6 +170,9 @@
 				Base,
 			);
 			mainGroup = 022F1E2927E651A5004CC37F;
+			packageReferences = (
+				028BF8A327E76302007AD1B8 /* XCRemoteSwiftPackageReference "Moya" */,
+			);
 			productRefGroup = 022F1E3327E651A5004CC37F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -400,6 +416,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		028BF8A327E76302007AD1B8 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		028BF8A427E76302007AD1B8 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 028BF8A327E76302007AD1B8 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 022F1E2A27E651A5004CC37F /* Project object */;
 }

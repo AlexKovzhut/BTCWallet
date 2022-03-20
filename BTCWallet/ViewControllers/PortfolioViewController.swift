@@ -126,7 +126,10 @@ extension PortfolioViewController {
             guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
 
             self.wallets.append(contentsOf: [
-                Wallet(walletAddress: walletAddress, walletAmount: "0.00 BTC")
+                Wallet(
+                    addrStr: walletAddress,
+                    balance: self.wallets.first?.balance ?? "Error",
+                    transactions: [])
             ])
             self.tableView.reloadData()
         }

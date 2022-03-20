@@ -84,7 +84,7 @@ class WalletTableViewCell: UITableViewCell {
     }
     
     public func configure(with wallet: Wallet) {
-        subTitleLabel.text = wallet.walletAddress
-        amountlabel.text = wallet.walletAmount
+        subTitleLabel.text = wallet.addrStr // Wallet Address
+        amountlabel.text = wallet.balance // Wallet Balance
     }
 }

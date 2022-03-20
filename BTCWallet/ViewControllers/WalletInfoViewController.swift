@@ -160,8 +160,8 @@ extension WalletInfoViewController {
     }
     
     private func fetchData() {
-        addressField.text = wallet?.walletAddress
-        balanceField.text = wallet?.walletAmount
+        addressField.text = wallet?.addrStr
+        balanceField.text = wallet?.balance
     }
     
 }

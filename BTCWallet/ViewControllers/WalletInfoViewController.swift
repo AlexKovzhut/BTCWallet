@@ -67,7 +67,6 @@ extension WalletInfoViewController {
         addDateTitle.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
         addDateField.translatesAutoresizingMaskIntoConstraints = false
-        addDateField.text = "19.03.2022 14:30"
         addDateField.font = UIFont.systemFont(ofSize: 16, weight: .light)
         
         // Update Date block
@@ -76,7 +75,6 @@ extension WalletInfoViewController {
         updateDateTitle.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
         updateDateField.translatesAutoresizingMaskIntoConstraints = false
-        updateDateField.text = "19.03.2022 15:30"
         updateDateField.font = UIFont.systemFont(ofSize: 16, weight: .light)
         
         // Address block

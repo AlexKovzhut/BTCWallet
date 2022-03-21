@@ -14,6 +14,7 @@ class PortfolioViewController: UIViewController {
     private let contentView = UIView()
     private let tableView = UITableView()
     private let addButton = UIButton()
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - Public properties
     public var wallets = [Wallet]()
@@ -51,10 +52,13 @@ extension PortfolioViewController {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = .white
         
+        refreshControl.addTarget(self, action: #selector(refreshTableView(sender:)), for: .valueChanged)
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(WalletTableViewCell.self, forCellReuseIdentifier: WalletTableViewCell.identifier)
         tableView.rowHeight = 95
         tableView.separatorStyle = .none
+        tableView.refreshControl = refreshControl
         
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.setTitle("Add Wallet", for: .normal)
@@ -121,6 +125,11 @@ extension PortfolioViewController: UITableViewDelegate {
 
 // MARK: - Navigation Method
 extension PortfolioViewController {
+    @objc func refreshTableView(sender: UIRefreshControl) {
+        tableView.reloadData()
+        sender.endRefreshing()
+    }
+    
     @objc func addButtonPressed() {
         print(#function)
         
@@ -139,9 +148,9 @@ extension PortfolioViewController {
                     } else {
                         self.wallets.append(contentsOf: [
                             Wallet(
-                                addrStr: wallet?.addrStr ?? "",
-                                balance: wallet?.balance ?? "",
-                                transactions: [])
+                                addrStr: wallet!.addrStr,
+                                balance: wallet!.balance
+                            )
                         ])
                         
                         self.tableView.reloadData()

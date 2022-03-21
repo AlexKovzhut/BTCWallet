@@ -15,6 +15,9 @@
 		022F1E4C27E6585C004CC37F /* WalletInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */; };
 		028BF8A527E76302007AD1B8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 028BF8A427E76302007AD1B8 /* Moya */; };
 		02ACAB4A27E76CD100170D18 /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ACAB4927E76CD100170D18 /* WalletService.swift */; };
+		02ACAB4F27E8CC7900170D18 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 02ACAB4E27E8CC7900170D18 /* Realm */; };
+		02ACAB5127E8CC7900170D18 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 02ACAB5027E8CC7900170D18 /* RealmSwift */; };
+		02ACAB5327E8CCDE00170D18 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ACAB5227E8CCDE00170D18 /* RealmService.swift */; };
 		02BE4F9227E6642500DC95C8 /* WalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE4F9127E6642500DC95C8 /* WalletTableViewCell.swift */; };
 		02BE4F9527E66A1800DC95C8 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE4F9427E66A1800DC95C8 /* Wallet.swift */; };
 /* End PBXBuildFile section */
@@ -29,6 +32,7 @@
 		022F1E4927E6559E004CC37F /* PortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewController.swift; sourceTree = "<group>"; };
 		022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletInfoViewController.swift; sourceTree = "<group>"; };
 		02ACAB4927E76CD100170D18 /* WalletService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletService.swift; sourceTree = "<group>"; };
+		02ACAB5227E8CCDE00170D18 /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
 		02BE4F9127E6642500DC95C8 /* WalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTableViewCell.swift; sourceTree = "<group>"; };
 		02BE4F9427E66A1800DC95C8 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -38,6 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02ACAB5127E8CC7900170D18 /* RealmSwift in Frameworks */,
+				02ACAB4F27E8CC7900170D18 /* Realm in Frameworks */,
 				028BF8A527E76302007AD1B8 /* Moya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,7 +70,7 @@
 		022F1E3427E651A5004CC37F /* BTCWallet */ = {
 			isa = PBXGroup;
 			children = (
-				02A5AAAC27E75A2B0054985A /* Network */,
+				02ACAB4B27E8CB8200170D18 /* Services */,
 				02BE4F9327E66A0D00DC95C8 /* Models */,
 				022F1E4E27E6591F004CC37F /* Application */,
 				022F1E4F27E65938004CC37F /* Resources */,
@@ -118,6 +124,23 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		02ACAB4B27E8CB8200170D18 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				02ACAB4C27E8CB9700170D18 /* Storage */,
+				02A5AAAC27E75A2B0054985A /* Network */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		02ACAB4C27E8CB9700170D18 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				02ACAB5227E8CCDE00170D18 /* RealmService.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		02BE4F9327E66A0D00DC95C8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +167,8 @@
 			name = BTCWallet;
 			packageProductDependencies = (
 				028BF8A427E76302007AD1B8 /* Moya */,
+				02ACAB4E27E8CC7900170D18 /* Realm */,
+				02ACAB5027E8CC7900170D18 /* RealmSwift */,
 			);
 			productName = BTCWallet;
 			productReference = 022F1E3227E651A5004CC37F /* BTCWallet.app */;
@@ -175,6 +200,7 @@
 			mainGroup = 022F1E2927E651A5004CC37F;
 			packageReferences = (
 				028BF8A327E76302007AD1B8 /* XCRemoteSwiftPackageReference "Moya" */,
+				02ACAB4D27E8CC7900170D18 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 022F1E3327E651A5004CC37F /* Products */;
 			projectDirPath = "";
@@ -209,6 +235,7 @@
 				022F1E3827E651A5004CC37F /* SceneDelegate.swift in Sources */,
 				02ACAB4A27E76CD100170D18 /* WalletService.swift in Sources */,
 				02BE4F9227E6642500DC95C8 /* WalletTableViewCell.swift in Sources */,
+				02ACAB5327E8CCDE00170D18 /* RealmService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +457,14 @@
 				kind = branch;
 			};
 		};
+		02ACAB4D27E8CC7900170D18 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -437,6 +472,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 028BF8A327E76302007AD1B8 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
+		};
+		02ACAB4E27E8CC7900170D18 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02ACAB4D27E8CC7900170D18 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		02ACAB5027E8CC7900170D18 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02ACAB4D27E8CC7900170D18 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

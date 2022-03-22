@@ -34,6 +34,7 @@ class WalletInfoViewController: UIViewController {
     
     // MARK: - Public properties
     public var wallet: Wallet?
+    public var deleteViewController: (() -> Void)?
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -168,6 +169,18 @@ extension WalletInfoViewController {
 extension WalletInfoViewController {
     @objc func removeButtonPressed() {
         
+        let alertController = UIAlertController(title: "Are you sure?", message: "This wallet will be deleted", preferredStyle: .alert)
         
+        let addAction = UIAlertAction(title: "Delete", style: .default) { action in
+            self.navigationController?.popViewController(animated: true)
+            self.deleteViewController?()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        
+        alertController.addAction(addAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
     }
 }

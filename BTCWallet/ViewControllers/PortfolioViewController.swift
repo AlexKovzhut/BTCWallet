@@ -7,6 +7,7 @@
 
 import UIKit
 import Moya
+import RealmSwift
 
 class PortfolioViewController: UIViewController {
     // MARK: - Private properties
@@ -118,6 +119,11 @@ extension PortfolioViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wallet = wallets[indexPath.row]
         let destinationController = WalletInfoViewController()
+        destinationController.deleteViewController = {
+            self.wallets.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        
         destinationController.wallet = wallet
         navigationController?.pushViewController(destinationController, animated: true)
     }
@@ -131,7 +137,6 @@ extension PortfolioViewController {
     }
     
     @objc func addButtonPressed() {
-        print(#function)
         
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
@@ -140,19 +145,23 @@ extension PortfolioViewController {
             
             self.walletProvider.request(.addWallet(walletAddress)) { result in
                 switch result {
-                case .success(let responce) :
+                case .success(let responce):
                     let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
                     
                     if wallet?.balance == nil {
                         self.showErrorAlert()
                     } else {
+                        
+                        RealmService.shared.addWallet(model: wallet!)
+                        print(wallet!)
+                        
                         self.wallets.append(contentsOf: [
                             Wallet(
                                 addrStr: wallet!.addrStr,
                                 balance: wallet!.balance
                             )
                         ])
-                        
+
                         self.tableView.reloadData()
                     }
 

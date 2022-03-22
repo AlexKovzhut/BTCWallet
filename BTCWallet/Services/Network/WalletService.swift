@@ -5,7 +5,7 @@
 //  Created by Alexander Kovzhut on 20.03.2022.
 //
 
-import UIKit
+import Foundation
 import Moya
 
 enum WalletService {

@@ -8,15 +8,25 @@
 import Foundation
 import RealmSwift
 
+
 class Wallet: Object, Codable {
-    @objc dynamic  var addrStr: String
-    @objc dynamic  var balance: String
+    @Persisted var address: String
+    @Persisted var balance: String
+    @Persisted var addedDate: String
+    @Persisted var updatedDate: String
     
-    convenience init(addrStr: String, balance: String) {
+    convenience init(address: String, balance: String, addedDate: String, updatedDate: String) {
         self.init()
-        self.addrStr = addrStr
+        self.address = address
         self.balance = balance
+        self.addedDate = addedDate
+        self.updatedDate = updatedDate
     }
+    
+    enum CodingKeys: String, CodingKey {
+           case address = "addrStr"
+           case balance = "balance"
+       }
 }
 
 // Example

@@ -159,20 +159,25 @@ extension WalletInfoViewController {
     }
     
     private func fetchData() {
-        addressField.text = wallet?.addrStr
-        balanceField.text = wallet?.balance
+        guard let wallet = wallet else { return }
+        
+        addressField.text = wallet.address
+        balanceField.text = wallet.balance
+        addDateField.text = wallet.addedDate
+        updateDateField.text = wallet.updatedDate
     }
-    
 }
 
 // MARK: - Navigation Method
 extension WalletInfoViewController {
     @objc func removeButtonPressed() {
-        
         let alertController = UIAlertController(title: "Are you sure?", message: "This wallet will be deleted", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Delete", style: .default) { action in
-            RealmService.shared.delete(model: self.wallet!)
+            guard let wallet = self.wallet else { return }
+            
+            RealmService.shared.delete(model: wallet)
+            
             self.navigationController?.popViewController(animated: true)
             self.deleteViewController?()
         }

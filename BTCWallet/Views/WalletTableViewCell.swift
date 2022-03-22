@@ -87,7 +87,7 @@ class WalletTableViewCell: UITableViewCell {
         let editedBalance = Double(wallet.balance)
         let balance = String(format: "%.1f", editedBalance!)
         
-        subTitleLabel.text = wallet.addrStr
+        subTitleLabel.text = wallet.address
         amountlabel.text = "\(balance) BTC"
     }
 }

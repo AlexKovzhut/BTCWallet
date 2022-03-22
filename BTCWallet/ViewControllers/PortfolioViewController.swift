@@ -8,6 +8,7 @@
 import UIKit
 import Moya
 import RealmSwift
+import Network
 
 class PortfolioViewController: UIViewController {
     // MARK: - Private properties
@@ -20,13 +21,12 @@ class PortfolioViewController: UIViewController {
     // MARK: - Public properties
     //public var wallets = [Wallet]()
     public var walletProvider = MoyaProvider<WalletService>()
-    public let realm = try! Realm()
     public var wallets: Results<Wallet>!
+    public var currentDate = Date()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
         setup()
         setNavigationBar()
         setStyle()
@@ -38,7 +38,7 @@ extension PortfolioViewController {
     private func setup() {
         tableView.dataSource = self
         tableView.delegate = self
-        wallets = realm.objects(Wallet.self)
+        wallets = RealmService.shared.realm.objects(Wallet.self)
     }
     
     private func setNavigationBar() {
@@ -131,18 +131,18 @@ extension PortfolioViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - Navigation Method
+// MARK: - Navigation and UIAlertController Methods
 extension PortfolioViewController {
     @objc func refreshTableView(sender: UIRefreshControl) {
-        tableView.reloadData()
+        updateData()
         sender.endRefreshing()
     }
     
     @objc func addButtonPressed() {
-        showAddAlert()
+        showAddWalletAlert()
     }
     
-    func showAddAlert() {
+    func showAddWalletAlert() {
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
@@ -152,14 +152,17 @@ extension PortfolioViewController {
                 switch result {
                 case .success(let responce):
                     let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
+                    wallet?.addedDate = setFormatToDate(date: currentDate)
+                    wallet?.updatedDate = setFormatToDate(date: currentDate)
                     
                     if wallet?.balance == nil {
-                        self.showErrorAlert()
+                            self.showErrorAlert()
                     } else {
                         RealmService.shared.add(model: wallet!)
                         let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
                         self.tableView.insertRows(at: [rowIndex], with: .automatic)
-                    }
+                }
+                    
                 case .failure(let error):
                     print(error)
                 }
@@ -177,9 +180,25 @@ extension PortfolioViewController {
     
     func showErrorAlert() {
         let title = "Error"
-        let message = "Address is not recognized or does not exist. Please, try again"
+        let message = "The address is not recognized or does not exist. Please try again"
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func setFormatToDate(date : Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
+        dateFormatter.timeZone = .autoupdatingCurrent
+
+        let stringDate = dateFormatter.string(from: date)
+        return stringDate
+    }
+    
+    func updateData() {
+        if let wallet = wallets.first {
+            RealmService.shared.update(model: wallet)
+            tableView.reloadData()
+        }
     }
 }

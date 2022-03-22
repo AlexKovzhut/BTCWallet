@@ -70,6 +70,7 @@
 		022F1E3427E651A5004CC37F /* BTCWallet */ = {
 			isa = PBXGroup;
 			children = (
+				02ACAB6B27EA48CE00170D18 /* Extensions */,
 				02ACAB4B27E8CB8200170D18 /* Services */,
 				02BE4F9327E66A0D00DC95C8 /* Models */,
 				022F1E4E27E6591F004CC37F /* Application */,
@@ -139,6 +140,13 @@
 				02ACAB5227E8CCDE00170D18 /* RealmService.swift */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		02ACAB6B27EA48CE00170D18 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		02BE4F9327E66A0D00DC95C8 /* Models */ = {

@@ -16,9 +16,17 @@ class RealmService {
 
     let realm = try! Realm()
     
-    func addWallet(model: Wallet) {
+    func add(model: Wallet) {
         try! realm.write {
             realm.add(model)
         }
     }
+    
+    func delete(model: Wallet) {
+        try! realm.write {
+            realm.delete(model)
+        }
+    }
+    
+    
 }

@@ -18,7 +18,6 @@
 		02ACAB4F27E8CC7900170D18 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 02ACAB4E27E8CC7900170D18 /* Realm */; };
 		02ACAB5127E8CC7900170D18 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 02ACAB5027E8CC7900170D18 /* RealmSwift */; };
 		02ACAB5327E8CCDE00170D18 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ACAB5227E8CCDE00170D18 /* RealmService.swift */; };
-		02ACAB6027E9CE7000170D18 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ACAB5F27E9CE7000170D18 /* UINavigationController.swift */; };
 		02BE4F9227E6642500DC95C8 /* WalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE4F9127E6642500DC95C8 /* WalletTableViewCell.swift */; };
 		02BE4F9527E66A1800DC95C8 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE4F9427E66A1800DC95C8 /* Wallet.swift */; };
 /* End PBXBuildFile section */
@@ -34,7 +33,6 @@
 		022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletInfoViewController.swift; sourceTree = "<group>"; };
 		02ACAB4927E76CD100170D18 /* WalletService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletService.swift; sourceTree = "<group>"; };
 		02ACAB5227E8CCDE00170D18 /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
-		02ACAB5F27E9CE7000170D18 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		02BE4F9127E6642500DC95C8 /* WalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTableViewCell.swift; sourceTree = "<group>"; };
 		02BE4F9427E66A1800DC95C8 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,7 +70,6 @@
 		022F1E3427E651A5004CC37F /* BTCWallet */ = {
 			isa = PBXGroup;
 			children = (
-				02ACAB5E27E9CE4A00170D18 /* Extensions */,
 				02ACAB4B27E8CB8200170D18 /* Services */,
 				02BE4F9327E66A0D00DC95C8 /* Models */,
 				022F1E4E27E6591F004CC37F /* Application */,
@@ -142,14 +139,6 @@
 				02ACAB5227E8CCDE00170D18 /* RealmService.swift */,
 			);
 			path = Storage;
-			sourceTree = "<group>";
-		};
-		02ACAB5E27E9CE4A00170D18 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				02ACAB5F27E9CE7000170D18 /* UINavigationController.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		02BE4F9327E66A0D00DC95C8 /* Models */ = {
@@ -245,7 +234,6 @@
 				022F1E4A27E6559E004CC37F /* PortfolioViewController.swift in Sources */,
 				022F1E3827E651A5004CC37F /* SceneDelegate.swift in Sources */,
 				02ACAB4A27E76CD100170D18 /* WalletService.swift in Sources */,
-				02ACAB6027E9CE7000170D18 /* UINavigationController.swift in Sources */,
 				02BE4F9227E6642500DC95C8 /* WalletTableViewCell.swift in Sources */,
 				02ACAB5327E8CCDE00170D18 /* RealmService.swift in Sources */,
 			);

@@ -9,8 +9,8 @@ import Foundation
 import RealmSwift
 
 class Wallet: Object, Codable {
-    @Persisted  var addrStr: String = ""
-    @Persisted  var balance: String = ""
+    @objc dynamic  var addrStr: String
+    @objc dynamic  var balance: String
     
     convenience init(addrStr: String, balance: String) {
         self.init()
@@ -18,15 +18,6 @@ class Wallet: Object, Codable {
         self.balance = balance
     }
 }
-
-class WalletList: Object {
-    @Persisted  var addrStr: String = ""
-    @Persisted  var balance: String = ""
-    
-    let wallets = List<Wallet>()
-}
-
-
 
 // Example
 //3QKCocNhzAgtgFLsD5qUZcG6e4TkfRf421

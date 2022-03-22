@@ -18,8 +18,10 @@ class PortfolioViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     
     // MARK: - Public properties
-    public var wallets = [Wallet]()
+    //public var wallets = [Wallet]()
     public var walletProvider = MoyaProvider<WalletService>()
+    public let realm = try! Realm()
+    public var wallets: Results<Wallet>!
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -36,6 +38,7 @@ extension PortfolioViewController {
     private func setup() {
         tableView.dataSource = self
         tableView.delegate = self
+        wallets = realm.objects(Wallet.self)
     }
     
     private func setNavigationBar() {
@@ -120,7 +123,6 @@ extension PortfolioViewController: UITableViewDelegate {
         let wallet = wallets[indexPath.row]
         let destinationController = WalletInfoViewController()
         destinationController.deleteViewController = {
-            self.wallets.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
         
@@ -137,13 +139,16 @@ extension PortfolioViewController {
     }
     
     @objc func addButtonPressed() {
-        
+        showAddAlert()
+    }
+    
+    func showAddAlert() {
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
             guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
             
-            self.walletProvider.request(.addWallet(walletAddress)) { result in
+            self.walletProvider.request(.addWallet(walletAddress)) { [self] result in
                 switch result {
                 case .success(let responce):
                     let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
@@ -151,33 +156,23 @@ extension PortfolioViewController {
                     if wallet?.balance == nil {
                         self.showErrorAlert()
                     } else {
-                        
-                        RealmService.shared.addWallet(model: wallet!)
-                        print(wallet!)
-                        
-                        self.wallets.append(contentsOf: [
-                            Wallet(
-                                addrStr: wallet!.addrStr,
-                                balance: wallet!.balance
-                            )
-                        ])
-
-                        self.tableView.reloadData()
+                        RealmService.shared.add(model: wallet!)
+                        let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
+                        self.tableView.insertRows(at: [rowIndex], with: .automatic)
                     }
-
                 case .failure(let error):
                     print(error)
                 }
             }
         }
-        
+            
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
-        
+            
         alertController.addTextField(configurationHandler: nil)
         alertController.addAction(addAction)
         alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true)
+            
+        self.present(alertController, animated: true)
     }
     
     func showErrorAlert() {

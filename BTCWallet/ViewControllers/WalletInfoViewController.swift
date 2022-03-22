@@ -172,6 +172,7 @@ extension WalletInfoViewController {
         let alertController = UIAlertController(title: "Are you sure?", message: "This wallet will be deleted", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Delete", style: .default) { action in
+            RealmService.shared.delete(model: self.wallet!)
             self.navigationController?.popViewController(animated: true)
             self.deleteViewController?()
         }

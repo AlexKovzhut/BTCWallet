@@ -202,26 +202,32 @@ extension PortfolioViewController {
     
     func updateData() {
         print(wallets!)
-        let wallet = wallets.first?.address
         
-        walletProvider.request(.addWallet(wallet!)) { [self] result in
-            switch result {
-            case .success(let responce):
-                let updateWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
-                
-                var newBalance = updateWallet?.balance
-                var newDate = setFormatToDate(date: currentDate)
-                
-                
+        for wallet in wallets {
+            let address = wallet.address
+            var array = [String]()
+            array.append(address)
+            
+            walletProvider.request(.addWallet(array.last!)) { [self] result in
+                switch result {
+                case .success(let responce):
+                    let updateWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
+                    
+                    var newBalance = updateWallet?.balance
+                    print(currentDate)
+                    var newDate = setFormatToDate(date: currentDate)
+                    
+                    
 
-                DispatchQueue.main.async { [self] in
-                try! RealmService.shared.realm.write {
-                    wallets.setValue(newBalance, forKey: "balance")
-                    wallets.setValue(newDate, forKey: "updatedDate")
+                    DispatchQueue.main.async { [self] in
+                    try! RealmService.shared.realm.write {
+                        wallet.balance = newBalance!
+                        wallets.setValue(newDate, forKey: "updatedDate")
+                        }
                     }
+                case .failure(let error):
+                    print(error)
                 }
-            case .failure(let error):
-                print(error)
             }
         }
     }

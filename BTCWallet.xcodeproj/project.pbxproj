@@ -15,9 +15,6 @@
 		022F1E4C27E6585C004CC37F /* WalletInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F1E4B27E6585C004CC37F /* WalletInfoViewController.swift */; };
 		02ACAB4A27E76CD100170D18 /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ACAB4927E76CD100170D18 /* WalletService.swift */; };
 		02ACAB5327E8CCDE00170D18 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ACAB5227E8CCDE00170D18 /* RealmService.swift */; };
-		02B5FC5627EB873100115841 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 02B5FC5527EB873100115841 /* Realm */; };
-		02B5FC5827EB873100115841 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 02B5FC5727EB873100115841 /* RealmSwift */; };
-		02B5FC5B27EB873E00115841 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 02B5FC5A27EB873E00115841 /* Moya */; };
 		02BE4F9227E6642500DC95C8 /* WalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE4F9127E6642500DC95C8 /* WalletTableViewCell.swift */; };
 		02BE4F9527E66A1800DC95C8 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE4F9427E66A1800DC95C8 /* Wallet.swift */; };
 /* End PBXBuildFile section */
@@ -42,9 +39,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02B5FC5827EB873100115841 /* RealmSwift in Frameworks */,
-				02B5FC5627EB873100115841 /* Realm in Frameworks */,
-				02B5FC5B27EB873E00115841 /* Moya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +64,6 @@
 		022F1E3427E651A5004CC37F /* BTCWallet */ = {
 			isa = PBXGroup;
 			children = (
-				02ACAB6B27EA48CE00170D18 /* Extensions */,
 				02ACAB4B27E8CB8200170D18 /* Services */,
 				02BE4F9327E66A0D00DC95C8 /* Models */,
 				022F1E4E27E6591F004CC37F /* Application */,
@@ -142,13 +135,6 @@
 			path = Storage;
 			sourceTree = "<group>";
 		};
-		02ACAB6B27EA48CE00170D18 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		02BE4F9327E66A0D00DC95C8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,9 +160,6 @@
 			);
 			name = BTCWallet;
 			packageProductDependencies = (
-				02B5FC5527EB873100115841 /* Realm */,
-				02B5FC5727EB873100115841 /* RealmSwift */,
-				02B5FC5A27EB873E00115841 /* Moya */,
 			);
 			productName = BTCWallet;
 			productReference = 022F1E3227E651A5004CC37F /* BTCWallet.app */;
@@ -207,8 +190,6 @@
 			);
 			mainGroup = 022F1E2927E651A5004CC37F;
 			packageReferences = (
-				02B5FC5427EB873100115841 /* XCRemoteSwiftPackageReference "realm-swift" */,
-				02B5FC5927EB873E00115841 /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			productRefGroup = 022F1E3327E651A5004CC37F /* Products */;
 			projectDirPath = "";
@@ -455,43 +436,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		02B5FC5427EB873100115841 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		02B5FC5927EB873E00115841 /* XCRemoteSwiftPackageReference "Moya" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Moya/Moya";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		02B5FC5527EB873100115841 /* Realm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02B5FC5427EB873100115841 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = Realm;
-		};
-		02B5FC5727EB873100115841 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02B5FC5427EB873100115841 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
-		};
-		02B5FC5A27EB873E00115841 /* Moya */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02B5FC5927EB873E00115841 /* XCRemoteSwiftPackageReference "Moya" */;
-			productName = Moya;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 022F1E2A27E651A5004CC37F /* Project object */;
 }

@@ -8,7 +8,6 @@
 import Foundation
 import RealmSwift
 
-
 class Wallet: Object, Codable {
     @Persisted var address: String
     @Persisted var balance: String

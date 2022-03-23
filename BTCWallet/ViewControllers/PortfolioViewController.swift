@@ -106,12 +106,9 @@ extension PortfolioViewController: UITableViewDataSource {
         let wallet = wallets[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: WalletTableViewCell.identifier, for: indexPath) as! WalletTableViewCell
-        
         cell.selectionStyle = .none
         cell.configure(with: wallet)
-        
-        
-          
+
         return cell
     }
 }
@@ -133,6 +130,7 @@ extension PortfolioViewController: UITableViewDelegate {
 
 // MARK: - Navigation and UIAlertController Methods
 extension PortfolioViewController {
+    // RefreshControll function
     @objc func refreshTableView() {
         updateData()
         let deadline = DispatchTime.now() + .milliseconds(500)
@@ -143,35 +141,37 @@ extension PortfolioViewController {
         }
     }
     
+    // Add wallet button function
     @objc func addButtonPressed() {
         showAddWalletAlert()
     }
     
+    // Main Alert method to add new wallet
     func showAddWalletAlert() {
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
             guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
-            
+ 
             self.walletProvider.request(.addWallet(walletAddress)) { [self] result in
                 switch result {
                 case .success(let responce):
                     let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
                     wallet?.addedDate = setFormatToDate(date: currentDate)
                     wallet?.updatedDate = setFormatToDate(date: currentDate)
-                    
+                        
                     if wallet?.balance == nil {
-                            self.showErrorAlert()
+                            showErrorAlert()
                     } else {
                         RealmService.shared.add(model: wallet!)
                         let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
                         self.tableView.insertRows(at: [rowIndex], with: .automatic)
+                    }
+                        
+                    case .failure(let error):
+                        print(error)
+                    }
                 }
-                    
-                case .failure(let error):
-                    print(error)
-                }
-            }
         }
             
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
@@ -183,6 +183,7 @@ extension PortfolioViewController {
         self.present(alertController, animated: true)
     }
     
+    // Alert if address is not found
     func showErrorAlert() {
         let title = "Error"
         let message = "The address is not recognized or does not exist. Please try again"
@@ -191,6 +192,7 @@ extension PortfolioViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    // To format create time wallet and update time
     func setFormatToDate(date : Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
@@ -200,9 +202,8 @@ extension PortfolioViewController {
         return stringDate
     }
     
+    // Refresh Control Method
     func updateData() {
-        print(wallets!)
-        
         for wallet in wallets {
             let address = wallet.address
             var array = [String]()
@@ -213,17 +214,11 @@ extension PortfolioViewController {
                 case .success(let responce):
                     let updateWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
                     
-                    var newBalance = updateWallet?.balance
-                    print(currentDate)
+                    let newBalance = updateWallet?.balance
                     var newDate = setFormatToDate(date: currentDate)
                     
-                    
-
                     DispatchQueue.main.async { [self] in
-                    try! RealmService.shared.realm.write {
-                        wallet.balance = newBalance!
-                        wallets.setValue(newDate, forKey: "updatedDate")
-                        }
+                        RealmService.shared.update(wallet: wallet, wallets: wallets, balance: newBalance!, date: newDate)
                     }
                 case .failure(let error):
                     print(error)

@@ -21,7 +21,6 @@ class PortfolioViewController: UIViewController {
     public var walletProvider = MoyaProvider<WalletService>()
     public var wallets: Results<Wallet>!
     
-    public var walletAddress = String()
     public var currentDate = Date()
     
     // MARK: - Life Cycle
@@ -105,7 +104,6 @@ extension PortfolioViewController: UITableViewDataSource {
     // Configure cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let wallet = wallets[indexPath.row]
-        walletAddress = wallet.address
         
         let cell = tableView.dequeueReusableCell(withIdentifier: WalletTableViewCell.identifier, for: indexPath) as! WalletTableViewCell
         
@@ -197,33 +195,34 @@ extension PortfolioViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
         dateFormatter.timeZone = .autoupdatingCurrent
-
+        
         let stringDate = dateFormatter.string(from: date)
         return stringDate
     }
     
     func updateData() {
         print(wallets!)
+        let wallet = wallets.first?.address
         
-//        walletProvider.request(.addWallet(walletAddress)) { [self] result in
-//            switch result {
-//            case .success(let responce):
-//                let updateWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
-//
-//
-//
-//
-//                DispatchQueue.main.async { [self] in
-//                try! RealmService.shared.realm.write {
-//                    if wallet?.balance = wallets.setValue(newBalance, forKey: "balance") {
-//                        wallet?.updatedDate = wallets.setValue(newDate, forKey: "updatedDate")
-//                    }
-//                }
-//            }
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
-     
+        walletProvider.request(.addWallet(wallet!)) { [self] result in
+            switch result {
+            case .success(let responce):
+                let updateWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
+                
+                var newBalance = updateWallet?.balance
+                var newDate = setFormatToDate(date: currentDate)
+                
+                
+
+                DispatchQueue.main.async { [self] in
+                try! RealmService.shared.realm.write {
+                    wallets.setValue(newBalance, forKey: "balance")
+                    wallets.setValue(newDate, forKey: "updatedDate")
+                    }
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

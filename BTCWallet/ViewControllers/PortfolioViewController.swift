@@ -16,12 +16,12 @@ class PortfolioViewController: UIViewController {
     private let contentView = UIView()
     private let tableView = UITableView()
     private let addButton = UIButton()
-    private let refreshControl = UIRefreshControl()
     
     // MARK: - Public properties
-    //public var wallets = [Wallet]()
     public var walletProvider = MoyaProvider<WalletService>()
     public var wallets: Results<Wallet>!
+    
+    public var walletAddress = String()
     public var currentDate = Date()
     
     // MARK: - Life Cycle
@@ -56,13 +56,12 @@ extension PortfolioViewController {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = .white
         
-        refreshControl.addTarget(self, action: #selector(refreshTableView(sender:)), for: .valueChanged)
-        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(WalletTableViewCell.self, forCellReuseIdentifier: WalletTableViewCell.identifier)
         tableView.rowHeight = 95
         tableView.separatorStyle = .none
-        tableView.refreshControl = refreshControl
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
         
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.setTitle("Add Wallet", for: .normal)
@@ -106,11 +105,14 @@ extension PortfolioViewController: UITableViewDataSource {
     // Configure cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let wallet = wallets[indexPath.row]
+        walletAddress = wallet.address
         
         let cell = tableView.dequeueReusableCell(withIdentifier: WalletTableViewCell.identifier, for: indexPath) as! WalletTableViewCell
         
         cell.selectionStyle = .none
         cell.configure(with: wallet)
+        
+        
           
         return cell
     }
@@ -133,9 +135,14 @@ extension PortfolioViewController: UITableViewDelegate {
 
 // MARK: - Navigation and UIAlertController Methods
 extension PortfolioViewController {
-    @objc func refreshTableView(sender: UIRefreshControl) {
+    @objc func refreshTableView() {
         updateData()
-        sender.endRefreshing()
+        let deadline = DispatchTime.now() + .milliseconds(500)
+        
+        DispatchQueue.main.asyncAfter(deadline: deadline) {
+            self.tableView.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+        }
     }
     
     @objc func addButtonPressed() {
@@ -196,9 +203,27 @@ extension PortfolioViewController {
     }
     
     func updateData() {
-        if let wallet = wallets.first {
-            RealmService.shared.update(model: wallet)
-            tableView.reloadData()
-        }
+        print(wallets!)
+        
+//        walletProvider.request(.addWallet(walletAddress)) { [self] result in
+//            switch result {
+//            case .success(let responce):
+//                let updateWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
+//
+//
+//
+//
+//                DispatchQueue.main.async { [self] in
+//                try! RealmService.shared.realm.write {
+//                    if wallet?.balance = wallets.setValue(newBalance, forKey: "balance") {
+//                        wallet?.updatedDate = wallets.setValue(newDate, forKey: "updatedDate")
+//                    }
+//                }
+//            }
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+     
     }
 }

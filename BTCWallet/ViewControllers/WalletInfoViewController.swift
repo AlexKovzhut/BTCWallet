@@ -39,7 +39,6 @@ class WalletInfoViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
         setNavigationBar()
         setStyle()
         setLayout()

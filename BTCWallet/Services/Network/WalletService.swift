@@ -19,8 +19,15 @@ extension WalletService: TargetType {
     
     var path: String {
         switch self {
-        case .addWallet(let addrStr):
-            return "/address/\(addrStr)"
+        case .addWallet(let address):
+            return "/address/\(address)"
+        }
+    }
+    
+    var sampleData: Data {
+        switch self {
+        case .addWallet:
+            return Data()
         }
     }
     

@@ -20,8 +20,6 @@ class PortfolioViewController: UIViewController {
     public var walletProvider = MoyaProvider<WalletService>()
     public var wallets: Results<Wallet>!
     
-    public var currentDate = Date()
-    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -159,6 +157,8 @@ extension PortfolioViewController {
                 switch result {
                 case .success(let responce):
                     guard let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return showErrorAlert() }
+                    
+                    let currentDate = Date()
                     wallet.addedDate = setFormatToDate(date: currentDate)
                     wallet.updatedDate = setFormatToDate(date: currentDate)
                         
@@ -194,6 +194,8 @@ extension PortfolioViewController {
                     let updatedWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
                     if wallet.balance != updatedWallet!.balance {
                         let newBalance = updatedWallet!.balance
+                        
+                        let currentDate = Date()
                         let newDate = setFormatToDate(date: currentDate)
 
                         DispatchQueue.main.async {

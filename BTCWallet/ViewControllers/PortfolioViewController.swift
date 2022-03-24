@@ -8,7 +8,6 @@
 import UIKit
 import Moya
 import RealmSwift
-import Network
 
 class PortfolioViewController: UIViewController {
     // MARK: - Private properties
@@ -26,6 +25,7 @@ class PortfolioViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        RealmService.shared.locationOfRealmConfig()
         setup()
         setNavigationBar()
         setStyle()

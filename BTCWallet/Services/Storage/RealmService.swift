@@ -34,4 +34,9 @@ class RealmService {
             model.updatedDate = updatedDate
         }
     }
+    
+    // Print location of local realm config
+    func locationOfRealmConfig() {
+        print("Realm is located at:", realm.configuration.fileURL!)
+    }
 }

@@ -29,7 +29,7 @@ class Wallet: Object, Codable {
 }
 
 
-// Example
+// Example Wallet
 //3QKCocNhzAgtgFLsD5qUZcG6e4TkfRf421
 //bc1q4n3ugl5fjahzjwlg9rj2vwg8pdrseuf4au2hgd
 //373GifzHRGRBALbtxHNhhQpZ9DqGuet4Dh

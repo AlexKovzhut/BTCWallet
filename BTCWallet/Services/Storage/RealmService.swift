@@ -16,7 +16,7 @@ class RealmService {
 
     let realm = try! Realm()
     
-    func add(model: Wallet) {
+    func create(model: Wallet) {
         try! realm.write {
             realm.add(model)
         }
@@ -28,10 +28,10 @@ class RealmService {
         }
     }
     
-    func update(wallet: Wallet, wallets: Results<Wallet>, balance: String, date: String) {
+    func update(model: Wallet, balance: String, updatedDate: String) {
         try! realm.write {
-            wallet.balance = balance
-            wallets.setValue(date, forKey: "updatedDate")
+            model.balance = balance
+            model.updatedDate = updatedDate
         }
     }
 }

@@ -169,6 +169,7 @@ extension WalletInfoViewController {
 
 // MARK: - Navigation Method
 extension WalletInfoViewController {
+    // Remove wallet method
     @objc func removeButtonPressed() {
         let alertController = UIAlertController(title: "Are you sure?", message: "This wallet will be deleted", preferredStyle: .alert)
         

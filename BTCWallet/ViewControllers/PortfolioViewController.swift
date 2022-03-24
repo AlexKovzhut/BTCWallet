@@ -119,12 +119,14 @@ extension PortfolioViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wallet = wallets[indexPath.row]
         let destinationController = WalletInfoViewController()
-        destinationController.deleteViewController = {
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
-        }
         
         destinationController.wallet = wallet
         navigationController?.pushViewController(destinationController, animated: true)
+        
+        // Delete cell method
+        destinationController.deleteViewController = {
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
 }
 
@@ -156,17 +158,13 @@ extension PortfolioViewController {
             self.walletProvider.request(.addWallet(walletAddress)) { [self] result in
                 switch result {
                 case .success(let responce):
-                    let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
-                    wallet?.addedDate = setFormatToDate(date: currentDate)
-                    wallet?.updatedDate = setFormatToDate(date: currentDate)
+                    guard let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return showErrorAlert() }
+                    wallet.addedDate = setFormatToDate(date: currentDate)
+                    wallet.updatedDate = setFormatToDate(date: currentDate)
                         
-                    if wallet?.balance == nil {
-                            showErrorAlert()
-                    } else {
-                        RealmService.shared.add(model: wallet!)
-                        let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
-                        self.tableView.insertRows(at: [rowIndex], with: .automatic)
-                    }
+                    RealmService.shared.create(model: wallet)
+                    let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
+                    self.tableView.insertRows(at: [rowIndex], with: .automatic)
                         
                     case .failure(let error):
                         print(error)
@@ -181,6 +179,32 @@ extension PortfolioViewController {
         alertController.addAction(cancelAction)
             
         self.present(alertController, animated: true)
+    }
+    
+    // Refresh Control Method
+    func updateData() {
+        for wallet in wallets {
+            var array = [String]()
+            array.append(wallet.address)
+            guard let walletAddress = array.last else { return }
+            
+            walletProvider.request(.addWallet(walletAddress)) { [self] result in
+                switch result {
+                case .success(let responce):
+                    guard let updatedWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return print("Some error...") }
+                    if wallet.balance != updatedWallet.balance {
+                        let newBalance = updatedWallet.balance
+                        let newDate = setFormatToDate(date: currentDate)
+
+                        DispatchQueue.main.async {
+                            RealmService.shared.update(model: wallet, balance: newBalance, updatedDate: newDate)
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
     
     // Alert if address is not found
@@ -200,30 +224,5 @@ extension PortfolioViewController {
         
         let stringDate = dateFormatter.string(from: date)
         return stringDate
-    }
-    
-    // Refresh Control Method
-    func updateData() {
-        for wallet in wallets {
-            let address = wallet.address
-            var array = [String]()
-            array.append(address)
-            
-            walletProvider.request(.addWallet(array.last!)) { [self] result in
-                switch result {
-                case .success(let responce):
-                    let updateWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
-                    
-                    let newBalance = updateWallet?.balance
-                    var newDate = setFormatToDate(date: currentDate)
-                    
-                    DispatchQueue.main.async { [self] in
-                        RealmService.shared.update(wallet: wallet, wallets: wallets, balance: newBalance!, date: newDate)
-                    }
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
     }
 }

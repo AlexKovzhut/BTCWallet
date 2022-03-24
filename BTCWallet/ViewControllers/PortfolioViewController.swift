@@ -20,6 +20,8 @@ class PortfolioViewController: UIViewController {
     public var walletProvider = MoyaProvider<WalletService>()
     public var wallets: Results<Wallet>!
     
+    public var currentDate = Date()
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -157,9 +159,8 @@ extension PortfolioViewController {
                 switch result {
                 case .success(let responce):
                     guard let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return showErrorAlert() }
-                    let date = Date()
-                    wallet.addedDate = setFormatToDate(date: date)
-                    wallet.updatedDate = setFormatToDate(date: date)
+                    wallet.addedDate = setFormatToDate(date: currentDate)
+                    wallet.updatedDate = setFormatToDate(date: currentDate)
                         
                     RealmService.shared.create(model: wallet)
                     let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
@@ -185,7 +186,7 @@ extension PortfolioViewController {
         for wallet in wallets {
             var array = [String]()
             array.append(wallet.address)
-            let walletAddress = array.last!
+            guard let walletAddress = array.last else { return }
             
             walletProvider.request(.addWallet(walletAddress)) { [self] result in
                 switch result {
@@ -193,8 +194,7 @@ extension PortfolioViewController {
                     let updatedWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
                     if wallet.balance != updatedWallet!.balance {
                         let newBalance = updatedWallet!.balance
-                        let date = Date()
-                        let newDate = setFormatToDate(date: date)
+                        let newDate = setFormatToDate(date: currentDate)
 
                         DispatchQueue.main.async {
                             RealmService.shared.update(model: wallet, balance: newBalance, updatedDate: newDate)

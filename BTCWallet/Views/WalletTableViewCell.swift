@@ -76,7 +76,7 @@ class WalletTableViewCell: UITableViewCell {
             
             subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
             subTitleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: iconImageView.trailingAnchor, multiplier: 1.5),
-            subTitleLabel.widthAnchor.constraint(equalTo: background.widthAnchor, multiplier: 1 / 1.8),
+            subTitleLabel.widthAnchor.constraint(equalTo: background.widthAnchor, multiplier: 1 / 1.9),
 
             amountlabel.centerYAnchor.constraint(equalTo: background.centerYAnchor),
             background.trailingAnchor.constraint(equalToSystemSpacingAfter: amountlabel.trailingAnchor, multiplier: 1.5)

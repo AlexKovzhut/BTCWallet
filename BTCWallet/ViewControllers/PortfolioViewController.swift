@@ -20,8 +20,6 @@ class PortfolioViewController: UIViewController {
     public var walletProvider = MoyaProvider<WalletService>()
     public var wallets: Results<Wallet>!
     
-    public var currentDate = Date()
-    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -159,8 +157,9 @@ extension PortfolioViewController {
                 switch result {
                 case .success(let responce):
                     guard let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return showErrorAlert() }
-                    wallet.addedDate = setFormatToDate(date: currentDate)
-                    wallet.updatedDate = setFormatToDate(date: currentDate)
+                    let date = Date()
+                    wallet.addedDate = setFormatToDate(date: date)
+                    wallet.updatedDate = setFormatToDate(date: date)
                         
                     RealmService.shared.create(model: wallet)
                     let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
@@ -186,15 +185,16 @@ extension PortfolioViewController {
         for wallet in wallets {
             var array = [String]()
             array.append(wallet.address)
-            guard let walletAddress = array.last else { return }
+            let walletAddress = array.last!
             
             walletProvider.request(.addWallet(walletAddress)) { [self] result in
                 switch result {
                 case .success(let responce):
-                    guard let updatedWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return print("Some error...") }
-                    if wallet.balance != updatedWallet.balance {
-                        let newBalance = updatedWallet.balance
-                        let newDate = setFormatToDate(date: currentDate)
+                    let updatedWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
+                    if wallet.balance != updatedWallet!.balance {
+                        let newBalance = updatedWallet!.balance
+                        let date = Date()
+                        let newDate = setFormatToDate(date: date)
 
                         DispatchQueue.main.async {
                             RealmService.shared.update(model: wallet, balance: newBalance, updatedDate: newDate)

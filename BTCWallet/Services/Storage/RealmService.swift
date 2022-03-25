@@ -29,8 +29,10 @@ class RealmService {
     }
     
     func update(model: Wallet, balance: String, updatedDate: String) {
+        //здесь лучше убрать updatedDate из параметров функции
         try! realm.write {
             model.balance = balance
+            //и брать дату прямо здесь
             model.updatedDate = updatedDate
         }
     }

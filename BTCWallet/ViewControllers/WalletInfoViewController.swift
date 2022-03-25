@@ -36,6 +36,17 @@ class WalletInfoViewController: UIViewController {
     public var wallet: Wallet?
     public var deleteViewController: (() -> Void)?
     
+    //обычно для передачи каких то параметров в UIViewController переопределяется метод init
+    
+//    init(wallet: Wallet) {
+//        self.wallet = wallet
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,6 +130,7 @@ extension WalletInfoViewController {
         view.addSubview(removeButton)
         
         NSLayoutConstraint.activate([
+            //И еще, старайся использовать констрейнт с multiplier только в крайних случаях. Это плохая практика. В этом приложении нету представлений в которых он необходим. Сделай все через constant
             iconImage.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 3),
             iconImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             iconImage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.5/8),
@@ -173,7 +185,7 @@ extension WalletInfoViewController {
     @objc func removeButtonPressed() {
         let alertController = UIAlertController(title: "Are you sure?", message: "This wallet will be deleted", preferredStyle: .alert)
         
-        let addAction = UIAlertAction(title: "Delete", style: .default) { action in
+        let addAction = UIAlertAction(title: "Delete", style: .default) { /* тут тоже [weak self] */ action in
             guard let wallet = self.wallet else { return }
             
             RealmService.shared.delete(model: wallet)

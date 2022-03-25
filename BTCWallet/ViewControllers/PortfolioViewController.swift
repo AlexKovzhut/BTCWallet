@@ -17,17 +17,25 @@ class PortfolioViewController: UIViewController {
     private let addButton = UIButton()
     
     // MARK: - Public properties
+    
+    //вынеси работу с сетью в WalletService
     public var walletProvider = MoyaProvider<WalletService>()
+    
+    //здесь было бы логичнее ыделать lazy перемененную и сразу присвоить ей RealmService.shared.realm.objects(Wallet.self)
     public var wallets: Results<Wallet>!
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //по умолчанию view.background присваивается цвет соответсвующий выбранной теме на устройстве. Так что если хочешь чтобы у тебя был одинцвет в не зависимости от темы. Делай явное присвоение view.background = .white
         RealmService.shared.locationOfRealmConfig()
         setup()
         setNavigationBar()
         setStyle()
         setLayout()
+        
+        //здесь нужно сделать обзервер на изменения в wallets, и делать tableView.reloadData() Иначе у тебя просто не будут отображаться обновленные балансы
     }
 }
     // MARK: - Private Methods
@@ -122,6 +130,7 @@ extension PortfolioViewController: UITableViewDelegate {
         navigationController?.pushViewController(destinationController, animated: true)
         
         // Delete cell method
+        //соответственно когда поставишь обзервер на wallets надобность в этом методе пропадет
         destinationController.deleteViewController = {
             self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -133,6 +142,8 @@ extension PortfolioViewController {
     // RefreshControll function
     @objc func refreshTableView() {
         updateData()
+        
+        // так делать точно не нужно, щапросы могут занять более 0.5 секунды
         let deadline = DispatchTime.now() + .milliseconds(500)
         
         DispatchQueue.main.asyncAfter(deadline: deadline) {
@@ -150,12 +161,13 @@ extension PortfolioViewController {
     func showAddWalletAlert() {
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
-        let addAction = UIAlertAction(title: "Add", style: .default) { action in
+        let addAction = UIAlertAction(title: "Add", style: .default) { /* во всех замыканиях, если используешь self нужно писать [weak self], иначне можно случайно создать цикл зависимостей */action in
             guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
  
-            self.walletProvider.request(.addWallet(walletAddress)) { [self] result in
+            self.walletProvider.request(.addWallet(walletAddress)) { [self] /* тоже weak */ result in
                 switch result {
                 case .success(let responce):
+                    //не стоит использовать одну и туже модель для парсинга данных и для сохранения в базу. Даже если они идентичны
                     guard let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return showErrorAlert() }
                     
                     let currentDate = Date()
@@ -183,6 +195,7 @@ extension PortfolioViewController {
     
     // Refresh Control Method
     func updateData() {
+        //зесь можно было написать addresses = wallets.map { $0.address }, и получил бы ровно тот же массив
         for wallet in wallets {
             var array = [String]()
             array.append(wallet.address)
@@ -198,6 +211,7 @@ extension PortfolioViewController {
                         let currentDate = Date()
                         let newDate = setFormatToDate(date: currentDate)
 
+                        
                         DispatchQueue.main.async {
                             RealmService.shared.update(model: wallet, balance: newBalance, updatedDate: newDate)
                         }

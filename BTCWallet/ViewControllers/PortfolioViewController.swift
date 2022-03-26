@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Moya
 import RealmSwift
 
 class PortfolioViewController: UIViewController {
@@ -17,8 +16,7 @@ class PortfolioViewController: UIViewController {
     private let addButton = UIButton()
     
     // MARK: - Public properties
-    public var walletProvider = MoyaProvider<WalletService>()
-    public var wallets: Results<Wallet>!
+    lazy var wallets = RealmService.shared.realm.objects(Wallet.self)
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -30,12 +28,12 @@ class PortfolioViewController: UIViewController {
         setLayout()
     }
 }
+
     // MARK: - Private Methods
 extension PortfolioViewController {
     private func setup() {
         tableView.dataSource = self
         tableView.delegate = self
-        wallets = RealmService.shared.realm.objects(Wallet.self)
     }
     
     private func setNavigationBar() {
@@ -116,7 +114,7 @@ extension PortfolioViewController: UITableViewDelegate {
     // Configure select cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wallet = wallets[indexPath.row]
-        let destinationController = WalletInfoViewController()
+        let destinationController = WalletInfoViewController(wallet: wallet)
         
         destinationController.wallet = wallet
         navigationController?.pushViewController(destinationController, animated: true)
@@ -133,9 +131,8 @@ extension PortfolioViewController {
     // RefreshControll function
     @objc func refreshTableView() {
         updateData()
-        let deadline = DispatchTime.now() + .milliseconds(500)
         
-        DispatchQueue.main.asyncAfter(deadline: deadline) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
             self.tableView.refreshControl?.endRefreshing()
             self.tableView.reloadData()
         }
@@ -150,26 +147,31 @@ extension PortfolioViewController {
     func showAddWalletAlert() {
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
-        let addAction = UIAlertAction(title: "Add", style: .default) { action in
+        let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] action in
             guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
+            
+            
+            
  
-            self.walletProvider.request(.addWallet(walletAddress)) { [self] result in
-                switch result {
-                case .success(let responce):
-                    guard let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return showErrorAlert() }
-                    
-                    let currentDate = Date()
-                    wallet.addedDate = setFormatToDate(date: currentDate)
-                    wallet.updatedDate = setFormatToDate(date: currentDate)
-                        
-                    RealmService.shared.create(model: wallet)
-                    let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
-                    self.tableView.insertRows(at: [rowIndex], with: .automatic)
-                        
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
+//            self?.walletProvider.request(.addWallet(walletAddress)) { [weak self] result in
+//                guard let self = self else { return }
+//
+//                switch result {
+//                case .success(let responce):
+//                    guard let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return self.showErrorAlert() }
+//
+//                    let currentDate = Date()
+//                    wallet.addedDate = currentDate.setFormatToDate()
+//                    wallet.updatedDate = currentDate.setFormatToDate()
+//
+//                    RealmService.shared.create(model: wallet)
+//                    let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
+//                    self.tableView.insertRows(at: [rowIndex], with: .automatic)
+//
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
         }
             
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
@@ -183,25 +185,17 @@ extension PortfolioViewController {
     
     // Refresh Control Method
     func updateData() {
-        for wallet in wallets {
-            var array = [String]()
-            array.append(wallet.address)
-            guard let walletAddress = array.last else { return }
-            
-            walletProvider.request(.addWallet(walletAddress)) { [self] result in
+        let addresses = wallets.map { $0.address }
+ 
+        for address in addresses {
+            WalletTarget.updateWallet(address) { result in
                 switch result {
                 case .success(let responce):
                     let updatedWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
-                    if wallet.balance != updatedWallet!.balance {
-                        let newBalance = updatedWallet!.balance
-                        
-                        let currentDate = Date()
-                        let newDate = setFormatToDate(date: currentDate)
-
-                        DispatchQueue.main.async {
-                            RealmService.shared.update(model: wallet, balance: newBalance, updatedDate: newDate)
-                        }
-                    }
+                    guard let wallet = updatedWallet else { return }
+                    let balance = wallet.balance
+                    print(balance)
+                    RealmService.shared.update(model: wallet, balance: balance)
                 case .failure(let error):
                     print(error)
                 }
@@ -216,15 +210,5 @@ extension PortfolioViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    // To format create time wallet and update time
-    func setFormatToDate(date : Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
-        dateFormatter.timeZone = .autoupdatingCurrent
-        
-        let stringDate = dateFormatter.string(from: date)
-        return stringDate
     }
 }

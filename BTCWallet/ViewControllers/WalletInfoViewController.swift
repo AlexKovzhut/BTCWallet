@@ -36,6 +36,15 @@ class WalletInfoViewController: UIViewController {
     public var wallet: Wallet?
     public var deleteViewController: (() -> Void)?
     
+    init(wallet: Wallet) {
+        self.wallet = wallet
+        super.init(nibName: nil, bundle: nil)
+    }
+     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -160,6 +169,7 @@ extension WalletInfoViewController {
     private func fetchData() {
         guard let wallet = wallet else { return }
         
+        
         addressField.text = wallet.address
         balanceField.text = wallet.balance
         addDateField.text = wallet.addedDate
@@ -173,7 +183,8 @@ extension WalletInfoViewController {
     @objc func removeButtonPressed() {
         let alertController = UIAlertController(title: "Are you sure?", message: "This wallet will be deleted", preferredStyle: .alert)
         
-        let addAction = UIAlertAction(title: "Delete", style: .default) { action in
+        let addAction = UIAlertAction(title: "Delete", style: .default) { [weak self] action in
+            guard let self = self else { return }
             guard let wallet = self.wallet else { return }
             
             RealmService.shared.delete(model: wallet)

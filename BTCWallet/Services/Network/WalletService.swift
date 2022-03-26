@@ -8,39 +8,15 @@
 import Foundation
 import Moya
 
-enum WalletService {
-    case addWallet(String)
-}
-
-extension WalletService: TargetType {
-    var baseURL: URL {
-        return URL(string: "https://btcbook.guarda.co/api")!
-    }
+class WalletService {
+    static let shared = WalletService()
     
-    var path: String {
-        switch self {
-        case .addWallet(let address):
-            return "/address/\(address)"
+    var walletProvider = MoyaProvider<WalletTarget>()
+    
+    func addNewWallet(with address: String, completion: Wallet) -> Void {
+        walletProvider.request(.createWallet(address)) { [weak self] result in
+       
         }
-    }
-    
-    var sampleData: Data {
-        switch self {
-        case .addWallet:
-            return Data()
-        }
-    }
-    
-    var method: Moya.Method {
-        return .get
-    }
-    
-    var task: Task {
-        return .requestPlain
-    }
-    
-    var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
     }
 }
 

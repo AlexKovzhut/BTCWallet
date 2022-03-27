@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class WalletTableViewCell: UITableViewCell {
     // MARK: - Public properties
@@ -59,30 +60,39 @@ class WalletTableViewCell: UITableViewCell {
         background.addSubview(titleLabel)
         background.addSubview(subTitleLabel)
         background.addSubview(amountlabel)
+        
+        // SnapKit
+        background.snp.makeConstraints({ make in
+            make.top.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview().inset(16)
+            make.trailing.equalToSuperview().inset(16)
+        })
+        
+        iconImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(background)
+            make.size.equalTo(48)
+            make.left.equalTo(background).offset(12)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(background).inset(10)
+            make.left.equalTo(iconImageView.snp.right).offset(10)
+        }
                     
-        NSLayoutConstraint.activate([
-            background.topAnchor.constraint(equalToSystemSpacingBelow: contentView.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            background.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
-            background.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.safeAreaLayoutGuide.leadingAnchor, multiplier: 2),
-            contentView.safeAreaLayoutGuide.trailingAnchor.constraint(equalToSystemSpacingAfter: background.trailingAnchor, multiplier: 2),
-            
-            iconImageView.centerYAnchor.constraint(equalTo: background.centerYAnchor),
-            iconImageView.heightAnchor.constraint(equalTo: background.heightAnchor, multiplier: 2 / 4),
-            iconImageView.widthAnchor.constraint(equalTo: background.widthAnchor, multiplier: 1 / 9),
-            iconImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: background.leadingAnchor, multiplier: 1.5),
-            
-            titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: background.topAnchor, multiplier: 1.5),
-            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: iconImageView.trailingAnchor, multiplier: 1.5),
-            
-            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            subTitleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: iconImageView.trailingAnchor, multiplier: 1.5),
-            subTitleLabel.widthAnchor.constraint(equalTo: background.widthAnchor, multiplier: 1 / 1.9),
-
-            amountlabel.centerYAnchor.constraint(equalTo: background.centerYAnchor),
-            background.trailingAnchor.constraint(equalToSystemSpacingAfter: amountlabel.trailingAnchor, multiplier: 1.5)
-        ])
+        subTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.left.equalTo(iconImageView.snp.right).offset(10)
+            make.size.equalTo(CGSize(width: 175, height: 30))
+        }
+        
+        amountlabel.snp.makeConstraints { make in
+            make.centerY.equalTo(background)
+            make.right.equalTo(background.snp.right).offset(-12)
+        }
     }
     
+    // Configure view in TableView
     public func configure(with wallet: Wallet) {
         let editedBalance = Double(wallet.balance)
         guard let editedBalance = editedBalance else { return }

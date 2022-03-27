@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import SnapKit
 
 class PortfolioViewController: UIViewController {
     // MARK: - Private properties
@@ -71,22 +72,26 @@ extension PortfolioViewController {
         contentView.addSubview(tableView)
         view.addSubview(addButton)
         
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: view.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -24),
-            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            tableView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        // SnapKit
+        contentView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
         
-            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 3.5 / 4),
-            addButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/20),
-            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24)
-        ])
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(contentView)
+            make.bottom.equalTo(addButton.snp.top)
+            make.leading.equalTo(contentView)
+            make.trailing.equalTo(contentView)
+        }
+        
+        addButton.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.size.equalTo(CGSize(width: 320, height: 40))
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+        }
     }
 }
 
@@ -169,7 +174,7 @@ extension PortfolioViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    // Add wallet method
+    // Create wallet method
     func createWallet(address: String) {
         WalletService.shared.createWallet(address: address) { [weak self] result in
             switch result {
@@ -187,16 +192,18 @@ extension PortfolioViewController {
         }
     }
     
-    // Refresh Control Method
+    // Update wallet method
     func updateWallet() {
         let addresses = wallets.map { $0.address }
         for address in addresses {
-            WalletService.shared.updateWallet(address: address) { [weak self] result in
+            WalletService.shared.updateWallet(address: address) { result in
                 switch result {
                 case .success(let wallet):
-                    let balance = wallet.balance
-                    print(balance)
-                    RealmService.shared.update(model: wallet, balance: balance)
+                    let currentBalance = wallet.balance
+                    DispatchQueue.main.async {
+                        RealmService.shared.update(model: wallet, balance: currentBalance)
+                        print("This wallet -> \(wallet)")
+                    }
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

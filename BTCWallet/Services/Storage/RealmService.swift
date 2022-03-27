@@ -30,7 +30,6 @@ class RealmService {
     
     func update(model: Wallet, balance: String) {
         let date = Date()
-        
         try! realm.write {
             model.balance = balance
             model.updatedDate = date.setFormatToDate()

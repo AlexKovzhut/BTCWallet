@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class WalletInfoViewController: UIViewController {
     // MARK: - Private properties
@@ -127,48 +128,64 @@ extension WalletInfoViewController {
         view.addSubview(balanceField)
         view.addSubview(removeButton)
         
-        NSLayoutConstraint.activate([
-            iconImage.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 3),
-            iconImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            iconImage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.5/8),
-            iconImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/13),
-            
-            addDateTitle.topAnchor.constraint(equalTo: iconImage.bottomAnchor, constant: 20),
-            addDateTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            addDateField.topAnchor.constraint(equalTo: addDateTitle.bottomAnchor, constant: 10),
-            addDateField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            updateDateTitle.topAnchor.constraint(equalTo: addDateField.bottomAnchor, constant: 30),
-            updateDateTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            updateDateField.topAnchor.constraint(equalTo: updateDateTitle.bottomAnchor, constant: 10),
-            updateDateField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            addressTitle.topAnchor.constraint(equalTo: updateDateField.bottomAnchor, constant: 30),
-            addressTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            addressField.topAnchor.constraint(equalTo: addressTitle.bottomAnchor, constant: 10),
-            addressField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addressField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/1.5),
-            
-            balanceTitle.topAnchor.constraint(equalTo: addressField.bottomAnchor, constant: 30),
-            balanceTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            balanceField.topAnchor.constraint(equalTo: balanceTitle.bottomAnchor, constant: 10),
-            balanceField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            balanceField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/1.5),
-            
-            removeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            removeButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 3.5 / 4),
-            removeButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/20),
-            removeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24)
-        ])
+        // SnapKit
+        iconImage.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
+            make.centerX.equalTo(view)
+            make.size.equalTo(80)
+        }
+        
+        addDateTitle.snp.makeConstraints { make in
+            make.top.equalTo(iconImage.snp.bottom).offset(25)
+            make.centerX.equalTo(view)
+        }
+        
+        addDateField.snp.makeConstraints { make in
+            make.top.equalTo(addDateTitle.snp.bottom).offset(10)
+            make.centerX.equalTo(view)
+        }
+        
+        updateDateTitle.snp.makeConstraints { make in
+            make.top.equalTo(addDateField.snp.bottom).offset(25)
+            make.centerX.equalTo(view)
+        }
+        
+        updateDateField.snp.makeConstraints { make in
+            make.top.equalTo(updateDateTitle.snp.bottom).offset(10)
+            make.centerX.equalTo(view)
+        }
+        
+        addressTitle.snp.makeConstraints { make in
+            make.top.equalTo(updateDateField.snp.bottom).offset(25)
+            make.centerX.equalTo(view)
+        }
+        
+        addressField.snp.makeConstraints { make in
+            make.top.equalTo(addressTitle.snp.bottom).offset(10)
+            make.centerX.equalTo(view)
+            make.width.equalTo(view.snp.width).offset(-120)
+        }
+        
+        balanceTitle.snp.makeConstraints { make in
+            make.top.equalTo(addressField.snp.bottom).offset(25)
+            make.centerX.equalTo(view)
+        }
+        
+        balanceField.snp.makeConstraints { make in
+            make.top.equalTo(balanceTitle.snp.bottom).offset(10)
+            make.centerX.equalTo(view)
+        }
+        
+        removeButton.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.size.equalTo(CGSize(width: 320, height: 40))
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+        }
     }
     
+    //Fetch to detail view wallet
     private func fetchData() {
         guard let wallet = wallet else { return }
-        
         
         addressField.text = wallet.address
         balanceField.text = wallet.balance

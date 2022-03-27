@@ -1,8 +1,8 @@
 //
-//  API.swift
+//  WalletTarget.swift
 //  BTCWallet
 //
-//  Created by Alexander Kovzhut on 26.03.2022.
+//  Created by Alexander Kovzhut on 27.03.2022.
 //
 
 import Foundation

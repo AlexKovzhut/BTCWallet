@@ -130,8 +130,7 @@ extension PortfolioViewController: UITableViewDelegate {
 extension PortfolioViewController {
     // RefreshControll function
     @objc func refreshTableView() {
-        updateData()
-        
+        updateWallet()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
             self.tableView.refreshControl?.endRefreshing()
             self.tableView.reloadData()
@@ -143,35 +142,13 @@ extension PortfolioViewController {
         showAddWalletAlert()
     }
     
-    // Main Alert method to add new wallet
+    // UIAlertController method to add wallet
     func showAddWalletAlert() {
         let alertController = UIAlertController(title: "Wallet Address", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { [weak self] action in
             guard let textField = alertController.textFields?.first, let walletAddress = textField.text else { return }
-            
-            
-            
- 
-//            self?.walletProvider.request(.addWallet(walletAddress)) { [weak self] result in
-//                guard let self = self else { return }
-//
-//                switch result {
-//                case .success(let responce):
-//                    guard let wallet = try? JSONDecoder().decode(Wallet.self, from: responce.data) else { return self.showErrorAlert() }
-//
-//                    let currentDate = Date()
-//                    wallet.addedDate = currentDate.setFormatToDate()
-//                    wallet.updatedDate = currentDate.setFormatToDate()
-//
-//                    RealmService.shared.create(model: wallet)
-//                    let rowIndex = IndexPath(row: self.wallets.count - 1, section: 0)
-//                    self.tableView.insertRows(at: [rowIndex], with: .automatic)
-//
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
+            self?.createWallet(address: walletAddress)
         }
             
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
@@ -183,26 +160,6 @@ extension PortfolioViewController {
         self.present(alertController, animated: true)
     }
     
-    // Refresh Control Method
-    func updateData() {
-        let addresses = wallets.map { $0.address }
- 
-        for address in addresses {
-            WalletTarget.updateWallet(address) { result in
-                switch result {
-                case .success(let responce):
-                    let updatedWallet = try? JSONDecoder().decode(Wallet.self, from: responce.data)
-                    guard let wallet = updatedWallet else { return }
-                    let balance = wallet.balance
-                    print(balance)
-                    RealmService.shared.update(model: wallet, balance: balance)
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-    }
-    
     // Alert if address is not found
     func showErrorAlert() {
         let title = "Error"
@@ -211,4 +168,40 @@ extension PortfolioViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    // Add wallet method
+    func createWallet(address: String) {
+        WalletService.shared.createWallet(address: address) { [weak self] result in
+            switch result {
+            case .success(let wallet):
+                let currentDate = Date()
+                wallet.addedDate = currentDate.setFormatToDate()
+                wallet.updatedDate = currentDate.setFormatToDate()
+                
+                RealmService.shared.create(model: wallet)
+                let rowIndex = IndexPath(row: self!.wallets.count - 1, section: 0)
+                self?.tableView.insertRows(at: [rowIndex], with: .automatic)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    // Refresh Control Method
+    func updateWallet() {
+        let addresses = wallets.map { $0.address }
+        for address in addresses {
+            WalletService.shared.updateWallet(address: address) { [weak self] result in
+                switch result {
+                case .success(let wallet):
+                    let balance = wallet.balance
+                    print(balance)
+                    RealmService.shared.update(model: wallet, balance: balance)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
 }
+

@@ -35,7 +35,7 @@ class WalletTableViewCell: UITableViewCell {
         background.backgroundColor = .white
         background.layer.borderWidth = 0.05
         background.layer.borderColor = UIColor.black.cgColor
-        background.layer.cornerRadius = 10
+        background.layer.cornerRadius = 12
         background.layer.shadowColor = UIColor.black.cgColor
         background.layer.shadowOpacity = 0.05
         

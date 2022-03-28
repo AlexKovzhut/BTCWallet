@@ -27,6 +27,7 @@ class PortfolioViewController: UIViewController {
         setNavigationBar()
         setStyle()
         setLayout()
+     
     }
 }
 
@@ -136,7 +137,8 @@ extension PortfolioViewController {
     // RefreshControll function
     @objc func refreshTableView() {
         updateWallet()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
             self.tableView.refreshControl?.endRefreshing()
             self.tableView.reloadData()
         }
@@ -177,38 +179,62 @@ extension PortfolioViewController {
     // Create wallet method
     func createWallet(address: String) {
         WalletService.shared.createWallet(address: address) { [weak self] result in
-            switch result {
-            case .success(let wallet):
-                let currentDate = Date()
-                wallet.addedDate = currentDate.setFormatToDate()
-                wallet.updatedDate = currentDate.setFormatToDate()
-                
-                RealmService.shared.create(model: wallet)
-                let rowIndex = IndexPath(row: self!.wallets.count - 1, section: 0)
-                self?.tableView.insertRows(at: [rowIndex], with: .automatic)
-            case .failure(let error):
-                print(error.localizedDescription)
+                switch result {
+                case .success(let wallet):
+                    let currentDate = Date()
+                    wallet.addedDate = currentDate.setFormatToDate()
+                    wallet.updatedDate = currentDate.setFormatToDate()
+                    
+                    RealmService.shared.create(model: wallet)
+                    let rowIndex = IndexPath(row: self!.wallets.count - 1, section: 0)
+                    self?.tableView.insertRows(at: [rowIndex], with: .automatic)
+                case .failure(let error):
+                    print(error.localizedDescription)
             }
         }
     }
     
     // Update wallet method
     func updateWallet() {
-        let addresses = wallets.map { $0.address }
-        for address in addresses {
-            WalletService.shared.updateWallet(address: address) { result in
+        for wallet in wallets {
+            var array = [String]()
+            array.append(wallet.address)
+            guard let walletAddress = array.last else { return }
+                    
+            WalletService.shared.updateWallet(address: walletAddress) {  result in
                 switch result {
-                case .success(let wallet):
-                    let currentBalance = wallet.balance
-                    DispatchQueue.main.async {
-                        RealmService.shared.update(model: wallet, balance: currentBalance)
-                        print("This wallet -> \(wallet)")
+                case .success(let receivedWallet):
+                    print("This is OLD wallet -> \(wallet)")
+                    if wallet.address == receivedWallet.address {
+                        let newBalance = receivedWallet.balance
+
+                        DispatchQueue.main.async {
+                            RealmService.shared.update(model: wallet, balance: newBalance)
+                            print("This is NEW wallet -> \(receivedWallet)")
+                        }
                     }
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print(error)
                 }
             }
         }
     }
 }
-
+        
+        
+//        let addresses = wallets.map { $0.address }
+//        for address in addresses {
+//            WalletService.shared.updateWallet(address: address) { result in
+//                switch result {
+//                case .success(let receivedWallet):
+//
+//                    DispatchQueue.main.async {
+//                        RealmService.shared.update(model: receivedWallet, balance: balance)
+//                        print("This is new wallet -> \(receivedWallet)")
+//
+//                    }
+//                case .failure(let error):
+//                    print(error.localizedDescription)
+//                }
+//            }
+//        }

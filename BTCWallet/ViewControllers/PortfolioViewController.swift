@@ -201,7 +201,7 @@ extension PortfolioViewController {
             array.append(wallet.address)
             guard let walletAddress = array.last else { return }
                     
-            WalletService.shared.updateWallet(address: walletAddress) {  result in
+            WalletService.shared.updateWallet(address: walletAddress) { result in
                 switch result {
                 case .success(let receivedWallet):
                     print("This is OLD wallet -> \(wallet)")
@@ -220,21 +220,3 @@ extension PortfolioViewController {
         }
     }
 }
-        
-        
-//        let addresses = wallets.map { $0.address }
-//        for address in addresses {
-//            WalletService.shared.updateWallet(address: address) { result in
-//                switch result {
-//                case .success(let receivedWallet):
-//
-//                    DispatchQueue.main.async {
-//                        RealmService.shared.update(model: receivedWallet, balance: balance)
-//                        print("This is new wallet -> \(receivedWallet)")
-//
-//                    }
-//                case .failure(let error):
-//                    print(error.localizedDescription)
-//                }
-//            }
-//        }

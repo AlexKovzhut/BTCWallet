@@ -1,7 +1,7 @@
 # Bitcoin Wallet Tracking App 🔎
 >Add some bitcoin wallets and tracking it
 
-For correct working app, add Moya and Realm frameworks: 
+Used in app Moya and Realm frameworks: 
 + https://github.com/Moya/Moya
 + https://github.com/realm
 
